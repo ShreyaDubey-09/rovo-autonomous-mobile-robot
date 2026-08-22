@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<robot name="rovo_robot"
+       xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="$(find rovo_description)/urdf/materials.xacro"/>
+
+<xacro:include filename="$(find rovo_description)/urdf/base.xacro"/>
+
+<xacro:include filename="$(find rovo_description)/urdf/wheels.xacro"/>
+
+<xacro:include filename="$(find rovo_description)/urdf/sensors.xacro"/>
+
+<xacro:include filename="$(find rovo_description)/urdf/gazebo.xacro"/>
+
+</robot>

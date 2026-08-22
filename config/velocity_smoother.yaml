@@ -1,0 +1,20 @@
+velocity_smoother:
+  ros__parameters:
+    smoothing_frequency: 20.0
+
+    scale_velocities: false
+
+    feedback: "OPEN_LOOP"
+
+    max_velocity: [0.5, 0.0, 1.0]
+    min_velocity: [-0.5, 0.0, -1.0]
+
+    max_accel: [0.15, 0.0, 0.5]
+    max_decel: [-0.20, 0.0, -0.7]
+
+    odom_topic: "/odom"
+    odom_duration: 0.1
+
+    velocity_timeout: 1.0
+
+    enable_stamped_cmd_vel: false
