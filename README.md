@@ -1,6 +1,6 @@
 🤖 Rovo — Autonomous Mobile Robot
 
-Rovo is a ROS 2-based Autonomous Mobile Robot (AMR) simulation that I built to learn and work with the different parts of a robotics software stack — from robot modeling and Gazebo simulation to LiDAR, SLAM, localization, TF, RViz, and Nav2 navigation.
+Rovo is a ROS 2-based Autonomous Mobile Robot (AMR) simulation that I built to learn and work with different parts of a robotics software stack — from robot modeling and Gazebo simulation to LiDAR, SLAM, localization, TF, RViz, and Nav2 navigation.
 
 The main goal of this project wasn't just to make a robot move. I wanted to understand what is actually happening behind the scenes and learn how to debug the system when things inevitably went wrong.
 
@@ -52,7 +52,7 @@ One of the main things I learned while building Rovo was that the different part
 
 The robot model, sensors, odometry, TF, SLAM, localization, and navigation all need to work together for the robot to navigate properly.
 
-At a high level, Rovo works like this:
+At a high level:
 
 Gazebo simulates the robot and its environment.
 URDF/Xacro defines the robot's structure and sensors.
@@ -64,7 +64,7 @@ AMCL estimates the robot's position on a saved map.
 Nav2 uses the map and robot position to plan and execute navigation goals.
 RViz2 helps visualize and debug what is happening.
 
-A simplified view of the main coordinate frames is:
+Simple frame relationship:
 
 map
  └── odom
@@ -86,52 +86,41 @@ Python	ROS 2 launch files and configuration
 CMake / ament_cmake	ROS 2 package build system
 Linux / Ubuntu	Development environment
 📁 Repository Structure
-rovo-autonomous-mobile-robot/
-│
-├── src/
-│   │
-│   ├── rovo_bringup/
-│   │   ├── config/
-│   │   │   └── nav2_params.yaml
-│   │   ├── launch/
-│   │   │   ├── demo.launch.py
-│   │   │   ├── mapping.launch.py
-│   │   │   ├── navigation.launch.py
-│   │   │   └── simulation.launch.py
-│   │   ├── maps/
-│   │   │   ├── amr_map.pgm
-│   │   │   └── amr_map.yaml
-│   │   └── rviz/
-│   │       └── rovo_nav.rviz
-│   │
-│   ├── rovo_description/
-│   │   ├── launch/
-│   │   │   └── display.launch.py
-│   │   └── urdf/
-│   │       ├── base.xacro
-│   │       ├── gazebo.xacro
-│   │       ├── materials.xacro
-│   │       ├── robot.urdf.xacro
-│   │       ├── sensors.xacro
-│   │       └── wheels.xacro
-│   │
-│   └── rovo_gazebo/
-│       ├── config/
-│       │   └── mapper_params_online_async.yaml
-│       ├── launch/
-│       │   └── gazebo.launch.py
-│       └── worlds/
-│           ├── amr_world.world
-│           └── warehouse.world
-│
-├── .gitignore
-├── LICENSE
-└── README.md
+
+The project is organized into three main ROS 2 packages:
+
+src/
+├── rovo_bringup/       # Launch files, Nav2 config, maps & RViz
+├── rovo_description/   # Robot URDF/Xacro and visualization
+└── rovo_gazebo/        # Gazebo simulation, worlds & configuration
+Package Overview
+Package	Purpose
+rovo_bringup	Navigation, mapping, launch files, maps and RViz configuration
+rovo_description	Robot model, URDF/Xacro, sensors and visualization
+rovo_gazebo	Gazebo worlds, simulation launch files and mapping configuration
+
+Some important files include:
+
+rovo_bringup/
+├── config/nav2_params.yaml
+├── launch/
+├── maps/
+└── rviz/rovo_nav.rviz
+
+rovo_description/
+├── launch/display.launch.py
+└── urdf/
+    ├── robot.urdf.xacro
+    ├── base.xacro
+    ├── wheels.xacro
+    └── sensors.xacro
+
+rovo_gazebo/
+├── config/
+├── launch/gazebo.launch.py
+└── worlds/
 🚀 Getting Started
 Prerequisites
-
-The project currently targets:
-
 Ubuntu 22.04
 ROS 2 Humble
 Gazebo Classic
@@ -148,9 +137,6 @@ Source ROS 2:
 
 source /opt/ros/humble/setup.bash
 2. Install Dependencies
-
-Install the main ROS 2 dependencies:
-
 sudo apt update
 
 sudo apt install \
@@ -163,29 +149,20 @@ sudo apt install \
     ros-humble-navigation2 \
     ros-humble-nav2-bringup
 3. Build the Workspace
-
-From the repository root:
-
 colcon build
 
 Then source the workspace:
 
 source install/setup.bash
 🌍 Running the Simulation
-
-Launch the Gazebo simulation:
-
 ros2 launch rovo_gazebo gazebo.launch.py
 
 This starts the Rovo robot inside the configured Gazebo environment.
 
 👁️ Viewing the Robot in RViz
-
-To visualize the robot model:
-
 ros2 launch rovo_description display.launch.py
 
-RViz is useful for inspecting:
+RViz is useful for visualizing:
 
 Robot model
 LiDAR data
@@ -195,33 +172,24 @@ Maps
 Navigation costmaps
 Planned paths
 🗺️ Mapping with SLAM
-
-Start the simulation and then launch the mapping system:
-
 ros2 launch rovo_bringup mapping.launch.py
 
-The robot can then be moved around the environment while SLAM Toolbox builds a map using LiDAR data.
+The robot can then be moved around while SLAM Toolbox builds a map using LiDAR.
 
-Some useful commands while mapping:
+Useful commands:
 
 ros2 topic list
-
-Check LiDAR data:
-
 ros2 topic echo /scan
-
-Check the generated map:
-
 ros2 topic echo /map
 
-Once the map is ready, it can be saved using:
+Save the map:
 
 ros2 run nav2_map_server map_saver_cli -f ~/rovo_map
 📍 Localization
 
-After creating a map, Rovo uses AMCL (Adaptive Monte Carlo Localization) to estimate its position on that map.
+After creating a map, Rovo uses AMCL to estimate its position.
 
-Localization depends on several things working together:
+Localization depends on:
 
 Saved map
 LiDAR data
@@ -229,30 +197,25 @@ Odometry
 Correct TF tree
 Initial pose estimate
 
-In RViz, the robot's starting position can be provided using 2D Pose Estimate.
+In RViz, use 2D Pose Estimate to provide the robot's initial position.
 
 🧭 Autonomous Navigation
-
-With a saved map available, launch Nav2:
-
 ros2 launch rovo_bringup navigation.launch.py
 
-From RViz, you can then:
+From RViz:
 
-Set the robot's initial pose
+Set the initial pose
 Set a navigation goal
-Monitor the costmaps
+Monitor costmaps
 Observe the planned path
-Watch how the robot responds to the goal
+Watch the robot's response
 
-The main Nav2 configuration is located at:
+Main Nav2 configuration:
 
 src/rovo_bringup/config/nav2_params.yaml
 🔧 Useful Debugging Commands
 
-A big part of developing Rovo was learning how to debug ROS 2 instead of just restarting everything and hoping it works.
-
-These are some of the commands that helped the most.
+A big part of developing Rovo was learning how to debug ROS 2 instead of just restarting everything and hoping it works. 😅
 
 Check Active Nodes
 ros2 node list
@@ -270,161 +233,99 @@ Visualize Node Connections
 rqt_graph
 Monitor System Resources
 top
-
 🧩 Debugging Journey & Things I Learned
 
-This is probably the part of the project that taught me the most.
+This is probably the part that taught me the most.
 
-Rovo definitely didn't work perfectly on the first try. A lot of time went into figuring out why something wasn't working rather than simply writing more code.
+Rovo didn't work perfectly on the first try. A lot of time went into figuring out why something wasn't working instead of simply writing more code.
 
-Here are some of the problems I ran into.
+1. Robot Partially Below Ground
 
-1. Robot Was Partially Below the Ground
+The robot initially had a problem where parts of the chassis and wheels were positioned incorrectly relative to the ground.
 
-At one point, the robot spawned with a large part of the chassis and wheels below the Gazebo ground plane.
+I had to check:
 
-The problem turned out to be related to the positioning of the robot's links.
-
-I went through:
-
-URDF/Xacro link origins
+URDF/Xacro origins
 Wheel radius
 Chassis dimensions
-Relative positions of the components
+Relative link positions
 Gazebo spawn position
 
-Eventually, the vertical placement of the robot components was corrected.
+This taught me how small geometry and transform errors can affect the entire simulation.
 
-What I learned
+2. RViz Showing "No Map Received"
 
-Even a small mistake in URDF geometry or link transforms can make the simulated robot behave completely differently from what you expect.
+At one point, /map was being published, but RViz still wasn't displaying the map correctly.
 
-2. RViz Said "No Map Received"
+The problem was related to the TF relationship between map and odom.
 
-This was one of those problems where the data technically existed, but RViz still wasn't showing what I expected.
-
-The /map topic was publishing correctly, so I checked the TF relationships.
-
-The issue was that the required relationship between the map and odometry frames wasn't available to RViz.
-
-After fixing the TF connection, the map appeared correctly.
-
-What I learned
-
-In ROS, publishing data is only part of the problem. The system also needs the correct coordinate-frame relationships for different nodes to understand where that data belongs.
+This taught me that publishing a topic isn't always enough — the coordinate frames also need to be connected correctly.
 
 3. Understanding map → odom → base_link
 
-Before working on this project, TF was one of the concepts I understood mostly in theory.
+TF was mostly theory to me before this project.
 
-While debugging Rovo, I had to actually understand how:
+While debugging SLAM, AMCL and Nav2, I realized how important the TF tree actually is.
 
 map
- ↓
-odom
- ↓
-base_link
+ └── odom
+      └── base_link
 
-fits together.
-
-This became especially important when working with SLAM, AMCL, and Nav2.
-
-What I learned
-
-A solid understanding of TF2 is essential when working with ROS 2 navigation.
+Understanding these relationships became essential for getting localization and navigation working.
 
 4. AMCL Needed an Initial Pose
 
-AMCL initially reported that it couldn't publish the robot pose or update the transform.
+AMCL couldn't properly publish the robot pose until an initial estimate was provided.
 
-The localization system had not been given a proper initial estimate of where the robot was on the map.
+Using 2D Pose Estimate in RViz solved this.
 
-Using 2D Pose Estimate in RViz allowed the robot's initial pose to be provided.
-
-What I learned
-
-Starting a localization node doesn't automatically mean the robot knows where it is.
-
-The localization system needs the right inputs, TF, and an initial estimate.
+This helped me understand that localization isn't just about running AMCL — it also depends on correct sensor data, TF, odometry and an initial estimate.
 
 5. LiDAR Range Warnings
 
-I also ran into warnings where the configured LiDAR minimum and maximum ranges didn't match the capabilities of the simulated sensor.
+I encountered warnings where the configured LiDAR limits didn't match the simulated sensor's actual range.
 
-I had to compare:
+I had to compare the sensor configuration with the actual Gazebo LiDAR parameters.
 
-Configured LiDAR range
-        vs.
-Actual simulated sensor range
+This taught me that sensor configuration matters just as much as the rest of the navigation stack.
 
-and adjust the configuration accordingly.
+6. Nav2 Didn't Always Like Every Goal
 
-What I learned
+Some navigation goals worked while more complex or curved paths produced planner/controller warnings.
 
-Sensor parameters matter. Even in simulation, the configuration should make sense for the sensor being modeled.
-
-6. Nav2 Didn't Always Like My Goals
-
-Navigation was probably the most interesting part to debug.
-
-Some goals worked, while certain paths — especially more complicated or curved ones — produced planner or controller warnings.
-
-I spent time looking at:
+I investigated:
 
 Planner logs
 Controller behavior
 Costmaps
 Goal tolerance
 TF
-Robot odometry
+Odometry
 Simulation timing
-What I learned
 
-Nav2 isn't one single algorithm that simply "moves the robot."
-
-It's a pipeline where localization, TF, costmaps, planning, control, and robot motion all have to work together.
+This showed me that Nav2 is really a pipeline where localization, TF, costmaps, planning, control and robot motion all depend on each other.
 
 7. Gazebo and RViz Performance
 
-Running Gazebo, RViz, SLAM, and Nav2 together became fairly demanding on the system.
+Running Gazebo, RViz, SLAM and Nav2 together can be demanding, especially on limited hardware.
 
-I used Linux tools such as:
+I used system monitoring tools such as top to understand what was happening.
 
-top
+This taught me that not every problem is a logic problem — sometimes the system itself is struggling.
 
-to monitor CPU usage.
+8. Cleaning and Organizing the Workspace
 
-This helped me understand whether a problem was actually caused by the robotics stack or by the simulation becoming computationally heavy.
+As the project grew, there were old files, generated outputs, temporary debugging files and obsolete packages.
 
-What I learned
-
-Not every robotics problem is a software-logic problem.
-
-Sometimes the computer running the simulation is simply struggling.
-
-8. Cleaning Up the ROS 2 Workspace
-
-The project originally contained a number of old files, generated outputs, temporary debugging files, and obsolete packages.
-
-As the project evolved, I cleaned the workspace and organized it into three main packages:
+I eventually organized the project into:
 
 rovo_bringup
 rovo_description
 rovo_gazebo
 
-Generated directories such as:
+and added generated directories such as build/, install/ and log/ to .gitignore.
 
-build/
-install/
-log/
-
-are ignored using .gitignore.
-
-What I learned
-
-Good project structure matters, especially when working with ROS 2.
-
-Keeping robot descriptions, simulation files, launch files, and configuration organized makes the project much easier to understand and maintain.
+This taught me that good project structure matters just as much as getting the code to work.
 
 📊 Current Project Status
 Component	Status
@@ -439,27 +340,27 @@ Map generation	✅
 AMCL localization	✅
 Nav2 integration	✅
 Autonomous navigation	🟡 Under development
-
-The main areas I'm currently working on are navigation robustness, path behavior, and simulation performance.
-
+Current Work
+Navigation robustness
+Path behavior
+Simulation performance
 🔮 Future Improvements
-
-Some things I would like to improve next:
-
 Improve navigation around curved paths
-Tune Nav2 planner and controller parameters
+Tune Nav2 planner/controller parameters
 Improve costmap configuration
 Optimize Gazebo simulation performance
 Improve obstacle avoidance
 Add waypoint-based navigation
-Test navigation with dynamic obstacles
-Improve the overall RViz visualization
+Test dynamic obstacles
+Improve RViz visualization
 Make the navigation stack more robust across different environments
 🎯 What This Project Taught Me
 
 The most valuable part of Rovo wasn't just getting a robot to navigate.
 
-It was understanding how the different pieces of a robotics system fit together:
+It was understanding how the different pieces of a robotics system fit together.
+
+A simplified view of the workflow:
 
 Robot Modeling
       ↓
@@ -477,7 +378,7 @@ Nav2
       ↓
 Navigation
 
-More importantly, I learned how to approach robotics problems systematically:
+And probably the most important workflow I learned was debugging:
 
 Check the nodes
       ↓
