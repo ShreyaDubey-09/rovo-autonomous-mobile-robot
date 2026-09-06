@@ -1,7 +1,28 @@
+# ROS 2 generated files
 build/
 install/
 log/
-.vscode/
-*.pyc
+
+# Python generated files
 __pycache__/
+*.py[cod]
+.pytest_cache/
+
+# ROS / tooling
+*.bag
+*.db3
+.vscode/
+.idea/
+
+# Generated TF/debug files
+frames_*.gv
+frames_*.pdf
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
 *.swp
+*~

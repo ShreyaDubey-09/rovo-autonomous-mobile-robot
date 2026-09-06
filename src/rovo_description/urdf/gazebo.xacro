@@ -11,10 +11,13 @@
 
       <update_rate>50</update_rate>
 
+      <joint_name>front_left_wheel_joint</joint_name>
+      <joint_name>front_right_wheel_joint</joint_name>
       <joint_name>left_wheel_joint</joint_name>
       <joint_name>right_wheel_joint</joint_name>
 
     </plugin>
+
 
     <!-- Differential Drive Controller -->
     <plugin name="diff_drive_controller"
@@ -27,12 +30,12 @@
 
       <update_rate>50</update_rate>
 
-      <!-- Wheel joints -->
+      <!-- ONLY powered rear wheels -->
       <left_joint>left_wheel_joint</left_joint>
       <right_joint>right_wheel_joint</right_joint>
 
       <!-- Wheel dimensions -->
-      <wheel_separation>0.54</wheel_separation>
+      <wheel_separation>0.45</wheel_separation>
       <wheel_diameter>0.16</wheel_diameter>
 
       <!-- Motor limits -->
@@ -52,7 +55,35 @@
   </gazebo>
 
 
-  <!-- Left Wheel Physics -->
+  <!-- Front Left Wheel -->
+  <gazebo reference="front_left_wheel">
+
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+
+    <material>Gazebo/Black</material>
+
+  </gazebo>
+
+
+  <!-- Front Right Wheel -->
+  <gazebo reference="front_right_wheel">
+
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+
+    <material>Gazebo/Black</material>
+
+  </gazebo>
+
+
+  <!-- Rear Left Wheel -->
   <gazebo reference="left_wheel">
 
     <mu1>1.0</mu1>
@@ -66,7 +97,7 @@
   </gazebo>
 
 
-  <!-- Right Wheel Physics -->
+  <!-- Rear Right Wheel -->
   <gazebo reference="right_wheel">
 
     <mu1>1.0</mu1>

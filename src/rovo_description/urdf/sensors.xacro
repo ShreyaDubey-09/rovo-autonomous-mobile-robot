@@ -36,7 +36,7 @@
     <parent link="base_link"/>
     <child link="lidar_link"/>
 
-    <origin xyz="0.20 0 0.22"/>
+    <origin xyz="0 0 0.20"/>
 
   </joint>
 

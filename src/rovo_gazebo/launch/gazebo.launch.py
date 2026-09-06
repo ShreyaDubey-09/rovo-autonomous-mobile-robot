@@ -67,11 +67,17 @@ def generate_launch_description():
                 package='gazebo_ros',
                 executable='spawn_entity.py',
                 arguments=[
-                    '-topic',
-                    'robot_description',
-                    '-entity',
-                    'rovo_robot'
-                ],
+		    '-topic',
+    		    'robot_description',
+    		    '-entity',
+    		    'rovo_robot',
+    		    '-x',
+    		    '0',
+    		    '-y',
+    	   	    '-2',
+    		    '-z',
+    		    '-0.26'
+ 	        ],
                 output='screen'
             )
         ]

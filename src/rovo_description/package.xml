@@ -2,20 +2,17 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>rovo_description</name>
+  <version>1.0.0</version>
+  <description>URDF and Xacro robot description for the Rovo autonomous mobile robot, including chassis, wheels, sensors, materials, and Gazebo configuration.</description>
+  <maintainer email="shreyad0906@gmail.com">Shreya Dubey</maintainer>
+  <license>MIT</license>
+
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <exec_depend>xacro</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>
   <exec_depend>joint_state_publisher_gui</exec_depend>
   <exec_depend>rviz2</exec_depend>
-  <test_depend>ament_lint_auto</test_depend>
-	
-  <version>0.0.0</version>
-  <description>TODO: Package description</description>
-  <maintainer email="shreya@todo.todo">shreya</maintainer>
-  <license>TODO: License declaration</license>
-
-  <buildtool_depend>ament_cmake</buildtool_depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
