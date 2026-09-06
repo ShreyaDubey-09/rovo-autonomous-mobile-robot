@@ -1,12 +1,10 @@
 🤖 Rovo — Autonomous Mobile Robot
 
-Rovo is a ROS 2-based Autonomous Mobile Robot (AMR) simulation that I built to learn and work with different parts of a robotics software stack — from robot modeling and Gazebo simulation to LiDAR, SLAM, localization, TF, RViz, and Nav2 navigation.
+Rovo is a ROS 2-based Autonomous Mobile Robot (AMR) simulation that I built to explore different parts of a robotics software stack — from robot modeling and Gazebo simulation to LiDAR, SLAM, localization, TF, RViz2, and Nav2 navigation.
 
-The main goal of this project wasn't just to make a robot move. I wanted to understand what is actually happening behind the scenes and learn how to debug the system when things inevitably went wrong.
+The goal of this project wasn't just to make a robot move. I wanted to understand what is actually happening behind the scenes and learn how to systematically debug the system when things don't work as expected.
 
-And there were quite a few things that went wrong. 😅
-
-This project became a hands-on way for me to understand how the different parts of a ROS 2 navigation stack connect together.
+This project became a hands-on way for me to understand how the different components of a ROS 2 navigation stack work together.
 
 📌 Project Overview
 
@@ -96,23 +94,28 @@ CMake / ament_cmake	ROS 2 package build system
 Linux / Ubuntu	Development environment
 🚀 Getting Started
 Prerequisites
+
+Make sure the following are installed:
+
 Ubuntu 22.04
 ROS 2 Humble
 Gazebo Classic
 Python 3
 colcon
 
-Make sure ROS 2 Humble is installed and sourced before building the workspace.
+Source ROS 2 before building the workspace:
 
+source /opt/ros/humble/setup.bash
 1. Clone the Repository
 git clone https://github.com/ShreyaDubey-09/rovo-autonomous-mobile-robot.git
 cd rovo-autonomous-mobile-robot
-
-Source ROS 2:
-
-source /opt/ros/humble/setup.bash
 2. Install Dependencies
+
+Update the package lists:
+
 sudo apt update
+
+Install the required ROS 2 packages:
 
 sudo apt install \
     ros-humble-xacro \
@@ -124,6 +127,9 @@ sudo apt install \
     ros-humble-navigation2 \
     ros-humble-nav2-bringup
 3. Build the Workspace
+
+Build the ROS 2 workspace:
+
 colcon build
 
 Then source the workspace:
@@ -137,10 +143,13 @@ ros2 launch rovo_gazebo gazebo.launch.py
 
 This starts the Rovo robot inside the configured Gazebo environment.
 
-👁️ Viewing the Robot in RViz
+👁️ Viewing the Robot in RViz2
+
+Launch the robot visualization:
+
 ros2 launch rovo_description display.launch.py
 
-RViz is useful for visualizing:
+RViz2 can be used to visualize:
 
 Robot model
 LiDAR data
@@ -155,51 +164,57 @@ Launch SLAM:
 
 ros2 launch rovo_bringup mapping.launch.py
 
-The robot can then be moved around while SLAM Toolbox builds a map using LiDAR.
+The robot can then be moved around while SLAM Toolbox builds a map using LiDAR and odometry data.
 
-Useful commands:
+Useful Commands
+
+Check available topics:
 
 ros2 topic list
+
+Inspect LiDAR data:
+
 ros2 topic echo /scan
+
+Inspect the generated map:
+
 ros2 topic echo /map
-
-Save the map:
-
+Save the Map
 ros2 run nav2_map_server map_saver_cli -f ~/rovo_map
 📍 Localization
 
-After creating a map, Rovo uses AMCL to estimate its position.
+After creating a map, Rovo uses AMCL to estimate its position on the saved map.
 
 Localization depends on:
 
 Saved map
 LiDAR data
 Odometry
-Correct TF tree
+Correct TF relationships
 Initial pose estimate
 
-In RViz, use 2D Pose Estimate to provide the robot's initial position.
+In RViz2, use 2D Pose Estimate to provide the robot's initial position.
 
 🧭 Autonomous Navigation
 
-Launch the navigation stack:
+Launch the Nav2 navigation stack:
 
 ros2 launch rovo_bringup navigation.launch.py
 
-From RViz:
+From RViz2:
 
-Set the initial pose
-Set a navigation goal
-Monitor costmaps
-Observe the planned path
-Watch the robot's response
+Set the initial pose.
+Set a navigation goal.
+Monitor the costmaps.
+Observe the planned path.
+Monitor the robot's response.
 
 Main Nav2 configuration:
 
 src/rovo_bringup/config/nav2_params.yaml
 🔧 Useful Debugging Commands
 
-A big part of developing Rovo was learning how to debug ROS 2 instead of just restarting everything and hoping it works. 😅
+A major part of developing Rovo was learning how to debug ROS 2 systematically instead of repeatedly restarting the simulation.
 
 Check Active Nodes
 ros2 node list
@@ -218,12 +233,11 @@ rqt_graph
 Monitor System Resources
 top
 
-top
 🧩 Debugging Journey & Things I Learned
 
-This is probably the part that taught me the most.
+This was one of the most valuable parts of building Rovo.
 
-Rovo didn't work perfectly on the first try. A lot of time went into figuring out why something wasn't working instead of simply writing more code.
+The project didn't work perfectly on the first try. A significant amount of time went into identifying why something wasn't working instead of simply writing more code.
 
 1. Robot Partially Below Ground
 
@@ -239,9 +253,9 @@ Gazebo spawn position
 
 This taught me how small geometry and transform errors can affect the entire simulation.
 
-2. RViz Showing "No Map Received"
+2. RViz2 Showing "No Map Received"
 
-At one point, /map was being published, but RViz still wasn't displaying the map correctly.
+At one point, /map was being published, but RViz2 still wasn't displaying the map correctly.
 
 The problem was related to the TF relationship between map and odom.
 
@@ -249,7 +263,7 @@ This taught me that publishing a topic isn't always enough — the coordinate fr
 
 3. Understanding TF
 
-TF was mostly theory to me before this project.
+TF was mostly theoretical to me before this project.
 
 While debugging SLAM, AMCL, and Nav2, I realized how important coordinate-frame relationships are for a mobile robot.
 
@@ -265,7 +279,7 @@ Understanding these relationships became essential for getting localization and 
 
 AMCL couldn't properly publish the robot pose until an initial estimate was provided.
 
-Using 2D Pose Estimate in RViz solved this.
+Using 2D Pose Estimate in RViz2 solved this.
 
 This helped me understand that localization isn't just about running AMCL — it also depends on correct sensor data, TF, odometry, and an initial estimate.
 
@@ -293,9 +307,9 @@ Simulation timing
 
 This showed me that Nav2 is a pipeline where localization, TF, costmaps, planning, control, and robot motion all depend on each other.
 
-7. Gazebo and RViz Performance
+7. Gazebo and RViz2 Performance
 
-Running Gazebo, RViz, SLAM, and Nav2 together can be demanding.
+Running Gazebo, RViz2, SLAM, and Nav2 together can be demanding.
 
 I used system monitoring tools such as top to understand what was happening.
 
@@ -305,13 +319,13 @@ This taught me that not every problem is a logic problem — sometimes the syste
 
 As the project grew, there were old files, generated outputs, temporary debugging files, and obsolete packages.
 
-I eventually organized the project into:
+I eventually organized the project into three main ROS 2 packages:
 
 rovo_bringup
 rovo_description
 rovo_gazebo
 
-and added generated directories such as build/, install/, and log/ to .gitignore.
+I also added generated directories such as build/, install/, and log/ to .gitignore.
 
 This taught me that good project structure matters just as much as getting the code to work.
 
@@ -322,7 +336,7 @@ Robot URDF/Xacro	✅ Complete
 Differential-drive simulation	✅ Complete
 Gazebo environment	✅ Complete
 LiDAR simulation	✅ Complete
-RViz visualization	✅ Complete
+RViz2 visualization	✅ Complete
 SLAM mapping	✅ Complete
 Map generation	✅ Complete
 AMCL localization	✅ Complete
@@ -340,7 +354,7 @@ Optimize Gazebo simulation performance
 Improve obstacle avoidance
 Add waypoint-based navigation
 Test dynamic obstacles
-Improve RViz visualization
+Improve RViz2 visualization
 Make the navigation stack more robust across different environments
 🎯 What This Project Taught Me
 
@@ -358,7 +372,7 @@ SLAM and map generation
 AMCL localization
 TF2
 Nav2 navigation
-RViz visualization
+RViz2 visualization
 ROS 2 debugging and troubleshooting
 
 The biggest lesson was learning how to debug a robotics system systematically.
@@ -382,8 +396,7 @@ Shreya Dubey
 Electronics & Telecommunication Engineering
 Robotics & Autonomous Systems Enthusiast
 
-GitHub:
-https://github.com/ShreyaDubey-09
+GitHub: ShreyaDubey-09
 
 📄 License
 
