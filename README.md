@@ -99,7 +99,9 @@ RViz2
 
 Provides visualization and debugging of the robot, sensors, TF, maps, costmaps, and navigation paths.
 
+
 🛠️ Tech Stack
+
 Technology	Purpose
 
 ROS 2 Humble	Robot middleware
