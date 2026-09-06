@@ -396,6 +396,7 @@ Path behavior
 
 Simulation performance
 
+
 🔮 Future Improvements
 
 Improve navigation around curved paths
@@ -407,6 +408,8 @@ Add waypoint-based navigation
 Test dynamic obstacles
 Improve RViz2 visualization
 Make the navigation stack more robust across different environments
+
+
 🎯 What This Project Taught Me
 
 The most valuable part of Rovo wasn't just getting a robot to navigate.
