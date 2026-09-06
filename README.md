@@ -10,8 +10,7 @@ This project became a hands-on way for me to understand how the different compon
 
 Rovo is a differential-drive mobile robot simulated in a warehouse-style environment.
 
-The project uses:
-
+Technologies Used
 ROS 2 Humble
 Gazebo Classic
 RViz2
@@ -22,9 +21,7 @@ AMCL
 Navigation2 (Nav2)
 TF2
 Differential-drive control
-
-With these components working together, Rovo can:
-
+What Rovo Can Do
 Spawn the robot in Gazebo
 Publish sensor and transform data
 Use LiDAR and SLAM to build a map
@@ -51,32 +48,40 @@ One of the main things I learned while building Rovo was that the different part
 The robot model, sensors, odometry, TF, SLAM, localization, and navigation all need to work together for the robot to navigate properly.
 
 Main Components
-
 Gazebo
+
 Simulates the robot, sensors, physics, and warehouse environment.
 
 URDF / Xacro
+
 Defines the robot's physical structure, links, joints, wheels, and sensors.
 
 LiDAR
+
 Provides information about the surrounding environment.
 
 Odometry
+
 Provides information about the robot's movement.
 
 TF2
+
 Maintains the relationships between the robot's coordinate frames.
 
 SLAM Toolbox
+
 Uses LiDAR and odometry data to build a map.
 
 AMCL
+
 Estimates the robot's position on a previously saved map.
 
 Nav2
+
 Handles path planning, control, and autonomous navigation.
 
 RViz2
+
 Provides visualization and debugging of the robot, sensors, TF, maps, costmaps, and navigation paths.
 
 🛠️ Tech Stack
@@ -185,8 +190,7 @@ ros2 run nav2_map_server map_saver_cli -f ~/rovo_map
 
 After creating a map, Rovo uses AMCL to estimate its position on the saved map.
 
-Localization depends on:
-
+Localization Depends On
 Saved map
 LiDAR data
 Odometry
@@ -200,17 +204,13 @@ In RViz2, use 2D Pose Estimate to provide the robot's initial position.
 Launch the Nav2 navigation stack:
 
 ros2 launch rovo_bringup navigation.launch.py
-
-From RViz2:
-
+From RViz2
 Set the initial pose.
 Set a navigation goal.
 Monitor the costmaps.
 Observe the planned path.
 Monitor the robot's response.
-
-Main Nav2 configuration:
-
+Main Nav2 Configuration
 src/rovo_bringup/config/nav2_params.yaml
 🔧 Useful Debugging Commands
 
