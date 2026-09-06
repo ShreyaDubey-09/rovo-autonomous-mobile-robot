@@ -28,19 +28,34 @@ Use LiDAR and SLAM to build a map
 Localize the robot on a saved map
 Use Nav2 to plan navigation paths
 Send navigation goals and observe the robot's behavior
-✨ Features
+ 
+ 
+ ✨ Features
+
 🦾 Custom differential-drive AMR model
+
 📐 Modular URDF/Xacro robot description
+
 🛞 Simulated wheel drive
+
 📡 Simulated LiDAR
+
 🌍 Custom Gazebo warehouse environment
+
 🗺️ SLAM-based mapping
+
 📍 AMCL-based localization
+
 🧭 Nav2 navigation
+
 👁️ RViz2 visualization
+
 🔄 TF2 coordinate-frame management
+
 ⚙️ Configurable Nav2 parameters
+
 🧩 Modular ROS 2 package structure
+
 🏗️ How the System Works
 
 One of the main things I learned while building Rovo was that the different parts of a ROS 2 robot are closely connected.
@@ -86,17 +101,32 @@ Provides visualization and debugging of the robot, sensors, TF, maps, costmaps, 
 
 🛠️ Tech Stack
 Technology	Purpose
+
 ROS 2 Humble	Robot middleware
+
 Gazebo Classic	Physics-based simulation
+
 RViz2	Visualization and debugging
-URDF / Xacro	Robot modeling
+
+URDF / Xacro	
+
+Robot modeling
+
 TF2	Coordinate-frame transformations
+
 SLAM Toolbox	Mapping
+
 AMCL	Localization on a known map
+
 Nav2	Autonomous navigation
+
 Python	ROS 2 launch files and configuration
+
 CMake / ament_cmake	ROS 2 package build system
+
 Linux / Ubuntu	Development environment
+
+
 🚀 Getting Started
 Prerequisites
 
@@ -330,23 +360,42 @@ I also added generated directories such as build/, install/, and log/ to .gitign
 This taught me that good project structure matters just as much as getting the code to work.
 
 📊 Current Project Status
+
 Component	Status
+
 ROS 2 workspace	✅ Complete
+
 Robot URDF/Xacro	✅ Complete
+
+
 Differential-drive simulation	✅ Complete
+
 Gazebo environment	✅ Complete
+
 LiDAR simulation	✅ Complete
+
 RViz2 visualization	✅ Complete
+
 SLAM mapping	✅ Complete
+
 Map generation	✅ Complete
+
 AMCL localization	✅ Complete
+
 Nav2 integration	✅ Complete
+
 Autonomous navigation	🟡 Under development
+
 Current Work
+
 Navigation robustness
+
 Path behavior
+
 Simulation performance
+
 🔮 Future Improvements
+
 Improve navigation around curved paths
 Tune Nav2 planner/controller parameters
 Improve costmap configuration
