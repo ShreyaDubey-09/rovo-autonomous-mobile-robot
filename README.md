@@ -67,9 +67,11 @@ RViz2 helps visualize and debug what is happening.
 Simple frame relationship:
 
 map
- |
+ │
+ ▼
 odom
-  |      
+ │
+ ▼
 base_link
 
 Understanding how these frames and components interact became a major part of debugging Rovo, especially when working with SLAM, AMCL, and Nav2.
@@ -237,9 +239,11 @@ TF was mostly theory to me before this project.
 While debugging SLAM, AMCL and Nav2, I realized how important the TF tree actually is.
 
 map
- |
+ │
+ ▼
 odom
-  |
+ │
+ ▼
 base_link
 
 Understanding these relationships became essential for getting localization and navigation working.
