@@ -6,7 +6,7 @@ The main goal of this project wasn't just to make a robot move. I wanted to unde
 
 And there were quite a few things that went wrong. 😅
 
-This project became a hands-on way for me to learn how the different parts of a ROS 2 navigation stack connect together.
+This project became a hands-on way for me to understand how the different parts of a ROS 2 navigation stack connect together.
 
 📌 Project Overview
 
@@ -46,31 +46,40 @@ Send navigation goals and observe the robot's behavior
 🔄 TF2 coordinate-frame management
 ⚙️ Configurable Nav2 parameters
 🧩 Modular ROS 2 package structure
-🏗️ How the System Fits Together
+🏗️ How the System Works
 
 One of the main things I learned while building Rovo was that the different parts of a ROS 2 robot are closely connected.
 
 The robot model, sensors, odometry, TF, SLAM, localization, and navigation all need to work together for the robot to navigate properly.
 
-At a high level:
+Main Components
 
-Gazebo simulates the robot and its environment.
-URDF/Xacro defines the robot's structure and sensors.
-LiDAR provides information about the surroundings.
-Odometry provides information about the robot's movement.
-TF2 keeps track of the relationships between coordinate frames.
-SLAM Toolbox uses sensor and odometry data to build a map.
-AMCL estimates the robot's position on a saved map.
-Nav2 uses the map and robot position to plan and execute navigation goals.
-RViz2 helps visualize and debug what is happening.
+Gazebo
+Simulates the robot, sensors, physics, and warehouse environment.
 
-Simple frame relationship:
+URDF / Xacro
+Defines the robot's physical structure, links, joints, wheels, and sensors.
 
-map
-└── odom
-    └── base_link
+LiDAR
+Provides information about the surrounding environment.
 
-Understanding how these frames and components interact became a major part of debugging Rovo, especially when working with SLAM, AMCL, and Nav2.
+Odometry
+Provides information about the robot's movement.
+
+TF2
+Maintains the relationships between the robot's coordinate frames.
+
+SLAM Toolbox
+Uses LiDAR and odometry data to build a map.
+
+AMCL
+Estimates the robot's position on a previously saved map.
+
+Nav2
+Handles path planning, control, and autonomous navigation.
+
+RViz2
+Provides visualization and debugging of the robot, sensors, TF, maps, costmaps, and navigation paths.
 
 🛠️ Tech Stack
 Technology	Purpose
@@ -121,6 +130,9 @@ Then source the workspace:
 
 source install/setup.bash
 🌍 Running the Simulation
+
+Launch the Gazebo simulation:
+
 ros2 launch rovo_gazebo gazebo.launch.py
 
 This starts the Rovo robot inside the configured Gazebo environment.
@@ -138,6 +150,9 @@ Maps
 Navigation costmaps
 Planned paths
 🗺️ Mapping with SLAM
+
+Launch SLAM:
+
 ros2 launch rovo_bringup mapping.launch.py
 
 The robot can then be moved around while SLAM Toolbox builds a map using LiDAR.
@@ -166,6 +181,9 @@ Initial pose estimate
 In RViz, use 2D Pose Estimate to provide the robot's initial position.
 
 🧭 Autonomous Navigation
+
+Launch the navigation stack:
+
 ros2 launch rovo_bringup navigation.launch.py
 
 From RViz:
@@ -200,6 +218,7 @@ rqt_graph
 Monitor System Resources
 top
 
+top
 🧩 Debugging Journey & Things I Learned
 
 This is probably the part that taught me the most.
@@ -228,15 +247,17 @@ The problem was related to the TF relationship between map and odom.
 
 This taught me that publishing a topic isn't always enough — the coordinate frames also need to be connected correctly.
 
-3. Understanding map → odom → base_link
+3. Understanding TF
 
 TF was mostly theory to me before this project.
 
-While debugging SLAM, AMCL and Nav2, I realized how important the TF tree actually is.
+While debugging SLAM, AMCL, and Nav2, I realized how important coordinate-frame relationships are for a mobile robot.
+
+The important frames I worked with included:
 
 map
-└── odom
-    └── base_link
+odom
+base_link
 
 Understanding these relationships became essential for getting localization and navigation working.
 
@@ -246,7 +267,7 @@ AMCL couldn't properly publish the robot pose until an initial estimate was prov
 
 Using 2D Pose Estimate in RViz solved this.
 
-This helped me understand that localization isn't just about running AMCL — it also depends on correct sensor data, TF, odometry and an initial estimate.
+This helped me understand that localization isn't just about running AMCL — it also depends on correct sensor data, TF, odometry, and an initial estimate.
 
 5. LiDAR Range Warnings
 
@@ -270,11 +291,11 @@ TF
 Odometry
 Simulation timing
 
-This showed me that Nav2 is really a pipeline where localization, TF, costmaps, planning, control and robot motion all depend on each other.
+This showed me that Nav2 is a pipeline where localization, TF, costmaps, planning, control, and robot motion all depend on each other.
 
 7. Gazebo and RViz Performance
 
-Running Gazebo, RViz, SLAM and Nav2 together can be demanding, especially on limited hardware.
+Running Gazebo, RViz, SLAM, and Nav2 together can be demanding.
 
 I used system monitoring tools such as top to understand what was happening.
 
@@ -282,7 +303,7 @@ This taught me that not every problem is a logic problem — sometimes the syste
 
 8. Cleaning and Organizing the Workspace
 
-As the project grew, there were old files, generated outputs, temporary debugging files and obsolete packages.
+As the project grew, there were old files, generated outputs, temporary debugging files, and obsolete packages.
 
 I eventually organized the project into:
 
@@ -290,22 +311,22 @@ rovo_bringup
 rovo_description
 rovo_gazebo
 
-and added generated directories such as build/, install/ and log/ to .gitignore.
+and added generated directories such as build/, install/, and log/ to .gitignore.
 
 This taught me that good project structure matters just as much as getting the code to work.
 
 📊 Current Project Status
 Component	Status
-ROS 2 workspace	✅
-Robot URDF/Xacro	✅
-Differential-drive simulation	✅
-Gazebo environment	✅
-LiDAR simulation	✅
-RViz visualization	✅
-SLAM mapping	✅
-Map generation	✅
-AMCL localization	✅
-Nav2 integration	✅
+ROS 2 workspace	✅ Complete
+Robot URDF/Xacro	✅ Complete
+Differential-drive simulation	✅ Complete
+Gazebo environment	✅ Complete
+LiDAR simulation	✅ Complete
+RViz visualization	✅ Complete
+SLAM mapping	✅ Complete
+Map generation	✅ Complete
+AMCL localization	✅ Complete
+Nav2 integration	✅ Complete
 Autonomous navigation	🟡 Under development
 Current Work
 Navigation robustness
@@ -327,38 +348,29 @@ The most valuable part of Rovo wasn't just getting a robot to navigate.
 
 It was understanding how the different pieces of a robotics system fit together.
 
-A simplified view of the workflow:
+Through this project, I gained hands-on experience with:
 
-Robot Modeling
-      ↓
-Gazebo Simulation
-      ↓
-Sensor Integration
-      ↓
-TF / Odometry
-      ↓
-SLAM
-      ↓
-Localization
-      ↓
-Nav2
-      ↓
-Navigation
+ROS 2 node and topic communication
+Robot modeling with URDF/Xacro
+Gazebo simulation
+LiDAR integration
+SLAM and map generation
+AMCL localization
+TF2
+Nav2 navigation
+RViz visualization
+ROS 2 debugging and troubleshooting
 
-And probably the most important workflow I learned was debugging:
+The biggest lesson was learning how to debug a robotics system systematically.
+
+Instead of repeatedly restarting the simulation, I learned to:
 
 Check the nodes
-      ↓
 Check the topics
-      ↓
-Check the TF
-      ↓
+Check the TF tree
 Check the logs
-      ↓
 Isolate the problem
-      ↓
-Fix it
-      ↓
+Fix the issue
 Test again
 
 That debugging process has probably been one of the most useful things I've learned from this project.
