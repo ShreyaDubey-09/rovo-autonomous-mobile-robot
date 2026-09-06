@@ -67,8 +67,10 @@ RViz2 helps visualize and debug what is happening.
 Simple frame relationship:
 
 map
- └── odom
-      └── base_link
+ |
+odom
+  |      
+base_link
 
 Understanding how these frames and components interact became a major part of debugging Rovo, especially when working with SLAM, AMCL, and Nav2.
 
@@ -85,40 +87,6 @@ Nav2	Autonomous navigation
 Python	ROS 2 launch files and configuration
 CMake / ament_cmake	ROS 2 package build system
 Linux / Ubuntu	Development environment
-📁 Repository Structure
-
-The project is organized into three main ROS 2 packages:
-
-src/
-├── rovo_bringup/       # Launch files, Nav2 config, maps & RViz
-├── rovo_description/   # Robot URDF/Xacro and visualization
-└── rovo_gazebo/        # Gazebo simulation, worlds & configuration
-Package Overview
-Package	Purpose
-rovo_bringup	Navigation, mapping, launch files, maps and RViz configuration
-rovo_description	Robot model, URDF/Xacro, sensors and visualization
-rovo_gazebo	Gazebo worlds, simulation launch files and mapping configuration
-
-Some important files include:
-
-rovo_bringup/
-├── config/nav2_params.yaml
-├── launch/
-├── maps/
-└── rviz/rovo_nav.rviz
-
-rovo_description/
-├── launch/display.launch.py
-└── urdf/
-    ├── robot.urdf.xacro
-    ├── base.xacro
-    ├── wheels.xacro
-    └── sensors.xacro
-
-rovo_gazebo/
-├── config/
-├── launch/gazebo.launch.py
-└── worlds/
 🚀 Getting Started
 Prerequisites
 Ubuntu 22.04
@@ -233,6 +201,7 @@ Visualize Node Connections
 rqt_graph
 Monitor System Resources
 top
+
 🧩 Debugging Journey & Things I Learned
 
 This is probably the part that taught me the most.
@@ -268,8 +237,10 @@ TF was mostly theory to me before this project.
 While debugging SLAM, AMCL and Nav2, I realized how important the TF tree actually is.
 
 map
- └── odom
-      └── base_link
+ |
+odom
+  |
+base_link
 
 Understanding these relationships became essential for getting localization and navigation working.
 
